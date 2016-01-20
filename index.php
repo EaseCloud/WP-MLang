@@ -130,6 +130,14 @@ add_action('init', function() {
 });
 
 
+function mlang_translate_text_array($arr) {
+    foreach($arr as &$item) {
+        $item = do_shortcode($item);
+    }
+    return $arr;
+}
+
+
 /**************************************
  * register the shortcode to display. *
  **************************************/
@@ -155,6 +163,7 @@ add_action('plugins_loaded', function() {
     add_filter('get_comment_excerpt', 'do_shortcode');
     add_filter('get_the_excerpt', 'do_shortcode');
     add_filter('wp_title', 'do_shortcode');
+    add_filter('document_title_parts', 'mlang_translate_text_array');
     add_filter('wp_nav_menu_items', 'do_shortcode');
     add_filter('wp_dropdown_cats', 'do_shortcode');
     add_filter('wp_dropdown_pages', 'do_shortcode');
