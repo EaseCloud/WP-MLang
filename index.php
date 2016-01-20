@@ -73,22 +73,25 @@ add_action('init', function() {
  ***********************************/
 
 // load textdomain and .mo file if "lang" is set
-load_theme_textdomain('theme-domain', get_template_directory() . '/lang');
+//load_theme_textdomain('theme-domain', get_template_directory() . '/lang');
 
 
 add_filter('locale', function($locale) {
 
-    @session_start();
-
     $languages = mlang_languages();
 
-    // 通过子域名指定的语言域
-    $lang = explode('.', $_SERVER['HTTP_HOST'])[0];
-    if(in_array($lang, $languages)) return $lang;
-
     // 通过设置 $_SESSION 指定语言域，SESSION 可以由 $_GET 进行设置
-    $lang = @$_SESSION['mlang_language'];
-    if(in_array($lang, $languages)) return $lang;
+    @session_start();
+    $lang_session = @$_SESSION['mlang_language'];
+
+    // 通过子域名指定的语言域
+    $lang_domain = explode('.', $_SERVER['HTTP_HOST'])[0];
+
+    if(in_array($lang_session, $languages)) {
+        $locale = $lang_session;
+    } elseif(in_array($lang_domain, $languages)) {
+        $locale = $lang_domain;
+    };
 
     return $locale;
 
@@ -101,7 +104,6 @@ add_filter('locale', function($locale) {
 
 // anyway, if session language settings exists, write it to the cookie.
 add_action('init', function() {
-
 
     if(isset($_GET['mlang_language'])) {
 
