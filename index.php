@@ -93,6 +93,8 @@ add_filter('locale', function($locale) {
         $locale = $lang_domain;
     };
 
+    if(preg_match('/^en_/', $locale)) $locale = 'en';
+
     return $locale;
 
 });
