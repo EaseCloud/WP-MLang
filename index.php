@@ -85,7 +85,8 @@ add_filter('locale', function($locale) {
     $lang_session = @$_SESSION['mlang_language'];
 
     // 通过子域名指定的语言域
-    $lang_domain = explode('.', $_SERVER['HTTP_HOST'])[0];
+    $lang_domain = explode('.', $_SERVER['HTTP_HOST']);
+    $lang_domain = $lang_domain[0];
 
     if(in_array($lang_session, $languages)) {
         $locale = $lang_session;
